@@ -31,3 +31,16 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     white-space: nowrap;
 }
+.url-error {
+    color: red;
+    background: #f9d1d1;
+    padding: 6px;
+    margin-top: 5px;
+    font-weight: 600;
+}.url-success {
+    color: green;
+    background: #e2f1d8;
+    margin-top: 5px;
+    padding: 6px;
+    font-weight: 600;
+}

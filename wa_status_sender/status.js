@@ -62,8 +62,6 @@ function callHook(status){
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
           console.log(this.responseText);
-      }else{
-        console.log("Failed to send status to hook url");
       }
     };
     xhttp.open("GET", url+"?status="+status, true);
@@ -71,11 +69,3 @@ function callHook(status){
     xhttp.send();
   });
 }
-/*setInterval(function(){
-  
-   //var data = document.getElementById("side").innerText;
-   // if(data.trim().startsWith("Phone Not Connected")){
-      
-  //  }
-  },
-  2000);*/

@@ -1,8 +1,7 @@
 /* Regex-pattern to check URLs against. 
    It matches URLs like: http[s]://[...]stackoverflow.com[...] */
-var urlRegex = /^file:\/\/\/:?/;
-
-
+var tabToUrl = {};
+var sourceUrl = 'https://web.whatsapp.com/';
 
 /* When the browser-action button is clicked... */
 chrome.browserAction.onClicked.addListener(function(tab) {
@@ -26,9 +25,36 @@ chrome.tabs.executeScript({
 });*/
 });
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  tabToUrl[tabId] = tab.url;
   if(changeInfo.status=='complete'){
-    chrome.tabs.executeScript(null,
-                       {file:"status.js"});
      console.log("loaded");
+     chrome.tabs.executeScript(null, {
+      file:"status.js"
+    }, _=>{
+      let e = chrome.runtime.lastError;
+      if(e !== undefined){
+      }
+    });
   }
+});
+chrome.tabs.onRemoved.addListener(function(tabid, removed) {
+   var targetUrl = tabToUrl[tabid];
+   console.log(targetUrl," targetUrl");
+   console.log(sourceUrl," sourceUrl");
+   delete tabToUrl[tabid];
+   //if(sourceUrl == targetUrl){
+     chrome.storage.local.get(['url'], function(result) {
+        console.log('Value currently is ' + result.url);
+        var status = 'closed'
+        var url = result.url;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              console.log(this.responseText);
+          }
+        };
+        xhttp.open("GET", url+"?status="+status, true);
+        xhttp.send();
+      });
+  //  }
 });

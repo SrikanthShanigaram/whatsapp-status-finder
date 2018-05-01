@@ -26,13 +26,14 @@ chrome.tabs.executeScript({
 });
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   tabToUrl[tabId] = tab.url;
-  if(changeInfo.status=='complete'){
+  if(changeInfo.status=='complete' && sourceUrl == tab.url){
      console.log("loaded");
      chrome.tabs.executeScript(null, {
       file:"status.js"
     }, _=>{
       let e = chrome.runtime.lastError;
       if(e !== undefined){
+        console.log(e);
       }
     });
   }
@@ -42,7 +43,7 @@ chrome.tabs.onRemoved.addListener(function(tabid, removed) {
    console.log(targetUrl," targetUrl");
    console.log(sourceUrl," sourceUrl");
    delete tabToUrl[tabid];
-   //if(sourceUrl == targetUrl){
+   if(sourceUrl == targetUrl){
      chrome.storage.local.get(['url'], function(result) {
         console.log('Value currently is ' + result.url);
         var status = 'closed'
@@ -56,5 +57,5 @@ chrome.tabs.onRemoved.addListener(function(tabid, removed) {
         xhttp.open("GET", url+"?status="+status, true);
         xhttp.send();
       });
-  //  }
+   }
 });

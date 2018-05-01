@@ -1,9 +1,14 @@
 var lastCall='';
-processStatus();
+setTimeout(function(){ 
+  processStatus();
+},5000);
 
 function processStatus(){
   console.log("initial method to process");
-  if(isInScanStatus()){
+  var scanStatus = isInScanStatus();
+  console.log(scanStatus," scan status");
+  if(scanStatus){
+    console.log("It is in scanning");
     return;
   }
   var data = document.getElementById("side");
